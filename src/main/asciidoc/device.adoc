@@ -1,0 +1,24 @@
+= Device 관련 API
+:toc: left
+:toclevels: 10
+:sectlinks: device
+
+== https&#xfeff;://example.io/device/get/{id}
+include::{snippets}/get-device-by-id/curl-request.adoc[]
+---
+include::{snippets}/get-device-by-id/path-parameters.adoc[]
+---
+include::{snippets}/get-device-by-id/http-request.adoc[]
+include::{snippets}/get-device-by-id/request-headers.adoc[]
+---
+include::{snippets}/get-device-by-id/response-body.adoc[]
+include::{snippets}/get-device-by-id/response-fields.adoc[]
+
+== https&#xfeff;://example.io/device/list
+include::{snippets}/get-devices-all/curl-request.adoc[]
+---
+include::{snippets}/get-devices-all/http-request.adoc[]
+include::{snippets}/get-devices-all/request-headers.adoc[]
+---
+include::{snippets}/get-devices-all/response-body.adoc[]
+include::{snippets}/get-devices-all/response-fields.adoc[]

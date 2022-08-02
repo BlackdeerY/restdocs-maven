@@ -1,0 +1,25 @@
+= Hub 관련 API
+:toc: left
+:toclevels: 10
+:sectlinks: hub
+
+== https&#xfeff;://example.io/user/hub/{id}
+include::{snippets}/get-hub-by-id/curl-request.adoc[]
+---
+include::{snippets}/get-hub-by-id/path-parameters.adoc[]
+---
+include::{snippets}/get-hub-by-id/http-request.adoc[]
+include::{snippets}/get-hub-by-id/request-headers.adoc[]
+---
+include::{snippets}/get-hub-by-id/response-body.adoc[]
+include::{snippets}/get-hub-by-id/response-fields.adoc[]
+
+== https&#xfeff;://example.io/hub/list
+include::{snippets}/get-hubs-all/curl-request.adoc[]
+---
+include::{snippets}/get-hubs-all/http-request.adoc[]
+include::{snippets}/get-hubs-all/request-headers.adoc[]
+---
+include::{snippets}/get-hubs-all/response-body.adoc[]
+include::{snippets}/get-hubs-all/response-fields.adoc[]]
+
