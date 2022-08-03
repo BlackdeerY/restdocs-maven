@@ -45,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 //@AutoConfigureMockMvc    // .webAppContextSetup(webApplicationContext)
 //@AutoConfigureRestDocs    // .apply(documentationConfiguration(restDocumentationContextProvider))
-public class RescdocsTest {
+public class RestdocsTest {
 
     private MockMvc mockMvc;
     private RestDocumentationResultHandler restDocumentationResultHandler;

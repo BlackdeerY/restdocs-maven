@@ -1,7 +1,9 @@
 = Hub 관련 API
+:doctype: book
+:source-highlighter: highlightjs
 :toc: left
 :toclevels: 10
-:sectlinks: hub
+:sectlinks:
 
 == https&#xfeff;://example.io/user/hub/{id}
 include::{snippets}/get-hub-by-id/curl-request.adoc[]

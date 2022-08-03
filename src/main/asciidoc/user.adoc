@@ -1,7 +1,9 @@
 = User 관련 API
+:doctype: book
+:source-highlighter: highlightjs
 :toc: left
 :toclevels: 10
-:sectlinks: user
+:sectlinks:
 
 == https&#xfeff;://example.io/user/get/{id}
 include::{snippets}/get-user-by-id/curl-request.adoc[]
