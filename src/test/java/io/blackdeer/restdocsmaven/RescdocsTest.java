@@ -10,8 +10,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +18,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.headers.HeaderDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -49,6 +48,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RescdocsTest {
 
     private MockMvc mockMvc;
+    private RestDocumentationResultHandler restDocumentationResultHandler;
+
+    private static HttpHeaders httpHeaders;
+    private static List<HeaderDescriptor> headerDescriptorList;
+    private static FieldDescriptor[] fieldDescriptorsUser;
+    private static FieldDescriptor[] fieldDescriptorsHub;
+    private static FieldDescriptor[] fieldDescriptorsDevice;
 
     @MockBean
     private UserRepository userRepository;
@@ -66,6 +72,10 @@ public class RescdocsTest {
     @BeforeEach
     public void beforeEach(WebApplicationContext webApplicationContext,
                            RestDocumentationContextProvider restDocumentationContextProvider) {
+        restDocumentationResultHandler =
+                document("{method-name}",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()));
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(documentationConfiguration(restDocumentationContextProvider)
@@ -74,7 +84,7 @@ public class RescdocsTest {
                         .withHost("example.io")
                         .withPort(8084)
                 )
-//                .alwaysDo(document("{method-name}/{step}"))
+                .alwaysDo(restDocumentationResultHandler)
                 .build();
     }
 
@@ -109,17 +119,14 @@ public class RescdocsTest {
             user.getHubs().add(hub);
             hubs.add(hub);
         }
-    }
 
-    @Test
-    public void restdocs() throws Exception {
-        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", "Bearer **********...");
 
-        List<HeaderDescriptor> headerDescriptorList = new ArrayList<>(1);
+        headerDescriptorList = new ArrayList<>(1);
         headerDescriptorList.add(headerWithName("Authorization").description("로그인한 계정의 권한(소유한 허브)과 일치하는 허브에만 접근 가능"));
 
-        FieldDescriptor[] fieldDescriptorsUser = new FieldDescriptor[] {
+        fieldDescriptorsUser = new FieldDescriptor[] {
                 fieldWithPath("id")
                         .description("사용자 식별 ID"),
                 fieldWithPath("name")
@@ -127,7 +134,7 @@ public class RescdocsTest {
                 subsectionWithPath("hubs")
                         .description("사용자가 권한을 가진 허브들")
         };
-        FieldDescriptor[] fieldDescriptorsHub = new FieldDescriptor[] {
+        fieldDescriptorsHub = new FieldDescriptor[] {
                 fieldWithPath("id")
                         .description("허브 식별 ID"),
                 fieldWithPath("name")
@@ -135,22 +142,16 @@ public class RescdocsTest {
                 subsectionWithPath("devices")
                         .description("허브에 연결된 장치들")
         };
-        FieldDescriptor[] fieldDescriptorsDevice = new FieldDescriptor[] {
+        fieldDescriptorsDevice = new FieldDescriptor[] {
                 fieldWithPath("id")
                         .description("장치 식별 ID"),
                 fieldWithPath("name")
                         .description("사용자가 지정한 장치의 이름")
         };
-
-        restdocsGetUserById(httpHeaders, headerDescriptorList, fieldDescriptorsUser);
-        restdocsGetHubById(httpHeaders, headerDescriptorList, fieldDescriptorsHub);
-        restdocsGetDeviceById(httpHeaders, headerDescriptorList, fieldDescriptorsDevice);
-        restdocsGetUsersAll(httpHeaders, headerDescriptorList, fieldDescriptorsUser);
-        restdocsGetHubsAll(httpHeaders, headerDescriptorList, fieldDescriptorsHub);
-        restdocsGetDevicesAll(httpHeaders, headerDescriptorList, fieldDescriptorsDevice);
     }
 
-    private void restdocsGetUserById(HttpHeaders httpHeaders, List<HeaderDescriptor> headerDescriptorList, FieldDescriptor[] fieldDescriptorsUser) throws Exception {
+    @Test
+    public void getUserById() throws Exception {
         for (User user : users) {
             when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         }
@@ -163,11 +164,8 @@ public class RescdocsTest {
                                 .headers(httpHeaders)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(
+                .andDo(restDocumentationResultHandler.
                         document(
-                                "get-user-by-id",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
                                 requestHeaders(headerDescriptorList),
                                 pathParameters(
                                         parameterWithName("id")
@@ -178,7 +176,8 @@ public class RescdocsTest {
                 );
     }
 
-    private void restdocsGetHubById(HttpHeaders httpHeaders, List<HeaderDescriptor> headerDescriptorList, FieldDescriptor[] fieldDescriptorsHub) throws Exception {
+    @Test
+    public void getHubById() throws Exception {
         for (Hub hub : hubs) {
             when(hubRepository.findById(hub.getId())).thenReturn(Optional.of(hub));
         }
@@ -191,11 +190,8 @@ public class RescdocsTest {
                                 .headers(httpHeaders)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(
+                .andDo(restDocumentationResultHandler.
                         document(
-                                "get-hub-by-id",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
                                 requestHeaders(headerDescriptorList),
                                 pathParameters(
                                         parameterWithName("id")
@@ -206,7 +202,8 @@ public class RescdocsTest {
                 );
     }
 
-    private void restdocsGetDeviceById(HttpHeaders httpHeaders, List<HeaderDescriptor> headerDescriptorList, FieldDescriptor[] fieldDescriptorsDevice) throws Exception {
+    @Test
+    public void getDeviceById() throws Exception {
         for (Device device : devices) {
             when(deviceRepository.findById(device.getId())).thenReturn(Optional.of(device));
         }
@@ -219,11 +216,8 @@ public class RescdocsTest {
                                 .headers(httpHeaders)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(
+                .andDo(restDocumentationResultHandler.
                         document(
-                                "get-device-by-id",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
                                 requestHeaders(headerDescriptorList),
                                 pathParameters(
                                         parameterWithName("id")
@@ -234,7 +228,8 @@ public class RescdocsTest {
                 );
     }
 
-    private void restdocsGetUsersAll(HttpHeaders httpHeaders, List<HeaderDescriptor> headerDescriptorList, FieldDescriptor[] fieldDescriptorsUser) throws Exception {
+    @Test
+    public void getUsersAll() throws Exception {
         when(userRepository.findAll()).thenReturn(users);
         this.mockMvc.perform(
                         RestDocumentationRequestBuilders
@@ -244,11 +239,8 @@ public class RescdocsTest {
                                 .headers(httpHeaders)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(
+                .andDo(restDocumentationResultHandler.
                         document(
-                                "get-users-all",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
                                 requestHeaders(headerDescriptorList),
                                 responseFields(
                                         fieldWithPath("[]")
@@ -258,7 +250,8 @@ public class RescdocsTest {
                 );
     }
 
-    private void restdocsGetHubsAll(HttpHeaders httpHeaders, List<HeaderDescriptor> headerDescriptorList, FieldDescriptor[] fieldDescriptorsHub) throws Exception {
+    @Test
+    public void getHubsAll() throws Exception {
         when(hubRepository.findAll()).thenReturn(hubs);
         this.mockMvc.perform(
                         RestDocumentationRequestBuilders
@@ -268,11 +261,8 @@ public class RescdocsTest {
                                 .headers(httpHeaders)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(
+                .andDo(restDocumentationResultHandler.
                         document(
-                                "get-hubs-all",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
                                 requestHeaders(headerDescriptorList),
                                 responseFields(
                                         fieldWithPath("[]")
@@ -282,7 +272,8 @@ public class RescdocsTest {
                 );
     }
 
-    private void restdocsGetDevicesAll(HttpHeaders httpHeaders, List<HeaderDescriptor> headerDescriptorList, FieldDescriptor[] fieldDescriptorsDevice) throws Exception {
+    @Test
+    public void getDevicesAll() throws Exception {
         when(deviceRepository.findAll()).thenReturn(devices);
         this.mockMvc.perform(
                         RestDocumentationRequestBuilders
@@ -292,11 +283,8 @@ public class RescdocsTest {
                                 .headers(httpHeaders)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(
+                .andDo(restDocumentationResultHandler.
                         document(
-                                "get-devices-all",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
                                 requestHeaders(headerDescriptorList),
                                 responseFields(
                                         fieldWithPath("[]")
