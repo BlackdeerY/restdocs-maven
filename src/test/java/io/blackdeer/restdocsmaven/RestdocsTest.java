@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -55,6 +56,8 @@ public class RestdocsTest {
     private static FieldDescriptor[] fieldDescriptorsUser;
     private static FieldDescriptor[] fieldDescriptorsHub;
     private static FieldDescriptor[] fieldDescriptorsDevice;
+
+    private static Principal principal;
 
     @MockBean
     private UserRepository userRepository;
@@ -148,6 +151,13 @@ public class RestdocsTest {
                 fieldWithPath("name")
                         .description("사용자가 지정한 장치의 이름")
         };
+
+        principal = new Principal() {
+            @Override
+            public String getName() {
+                return "사용자01";
+            }
+        };
     }
 
     @Test
@@ -162,6 +172,7 @@ public class RestdocsTest {
                                         1L
                                 )
                                 .headers(httpHeaders)
+//                                .principal(principal)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(restDocumentationResultHandler.
@@ -188,6 +199,7 @@ public class RestdocsTest {
                                         1L
                                 )
                                 .headers(httpHeaders)
+//                                .principal(principal)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(restDocumentationResultHandler.
@@ -214,6 +226,7 @@ public class RestdocsTest {
                                         1L
                                 )
                                 .headers(httpHeaders)
+//                                .principal(principal)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(restDocumentationResultHandler.
@@ -237,6 +250,7 @@ public class RestdocsTest {
                                         "/user/list"
                                 )
                                 .headers(httpHeaders)
+//                                .principal(principal)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(restDocumentationResultHandler.
@@ -259,6 +273,7 @@ public class RestdocsTest {
                                         "/hub/list"
                                 )
                                 .headers(httpHeaders)
+//                                .principal(principal)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(restDocumentationResultHandler.
@@ -281,6 +296,7 @@ public class RestdocsTest {
                                         "/device/list"
                                 )
                                 .headers(httpHeaders)
+//                                .principal(principal)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(restDocumentationResultHandler.
