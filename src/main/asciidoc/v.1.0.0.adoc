@@ -1,0 +1,261 @@
+:stylesheet: dark.css
+:doctype: book
+:source-highlighter: highlight.js
+:toc-title: RestDocs Example
+:toc: left
+:toclevels: 10
+:sectlinks:
+:table-caption:
+:hardbreaks-option:
+
+
+
+&#xfeff; +
+&#xfeff; +
+&#xfeff; +
+&#xfeff; +
+&#xfeff;
+
+
+
+== [GET] ~/user/{id}
+[GET] https&#xfeff;://example.io:8084/user/{id}
+
+=== 사용자 정보 확인
+사용자의 정보를 얻습니다. +
+&#xfeff;
+
+==== request
+include::{snippets}/user_get_id/http-request.adoc[]
+include::{snippets}/user_get_id/httpie-request.adoc[]
+include::{snippets}/user_get_id/request-headers.adoc[]
+include::{snippets}/user_get_id/path-parameters.adoc[]
+&#xfeff;
+
+==== response
+include::{snippets}/user_get_id/http-response.adoc[]
+include::{snippets}/user_get_id/response-fields.adoc[]
+|===
+|HttpStatus|Description
+
+|[lime]#OK(200)#|정상
+|BAD_REQUEST(400)|
+ㆍ _path parameters_ 에 잘못된 타입의 값이 있음
+ㆍ 존재하지 않는 사용자 ID로 요쳥했음
+|UNAUTHORIZED(401)|권한 없음
+|INTERNAL_SERVER_ERROR(500)|서버 에러
+
+|===
+&#xfeff; +
+&#xfeff; +
+&#xfeff; +
+&#xfeff; +
+&#xfeff;
+
+
+
+== [GET] ~/user/list
+[GET] https&#xfeff;://example.io:8084/user/list
+
+=== 사용자 목록 확인
+모든 사용자들의 목록을 얻습니다. +
+&#xfeff;
+
+==== request
+include::{snippets}/user_get_list/http-request.adoc[]
+include::{snippets}/user_get_list/httpie-request.adoc[]
+include::{snippets}/user_get_list/request-headers.adoc[]
+&#xfeff;
+
+==== response
+include::{snippets}/user_get_list/http-response.adoc[]
+include::{snippets}/user_get_list/response-fields.adoc[]
+|===
+|HttpStatus|Description
+
+|[lime]#OK(200)#|정상
+|UNAUTHORIZED(401)|권한 없음
+|INTERNAL_SERVER_ERROR(500)|서버 에러
+
+|===
+&#xfeff; +
+&#xfeff; +
+&#xfeff; +
+&#xfeff; +
+&#xfeff;
+
+
+
+== [GET] ~/hub/{id}
+[GET] https&#xfeff;://example.io:8084/hub/{id}
+
+=== 허브 정보 확인
+허브의 정보를 얻습니다. +
+&#xfeff;
+
+==== request
+include::{snippets}/hub_get_id/http-request.adoc[]
+include::{snippets}/hub_get_id/httpie-request.adoc[]
+include::{snippets}/hub_get_id/request-headers.adoc[]
+include::{snippets}/hub_get_id/path-parameters.adoc[]
+&#xfeff;
+
+==== response
+include::{snippets}/hub_get_id/http-response.adoc[]
+include::{snippets}/hub_get_id/response-fields.adoc[]
+|===
+|HttpStatus|Description
+
+|[lime]#OK(200)#|정상
+|BAD_REQUEST(400)|
+ㆍ _path parameters_ 에 잘못된 타입의 값이 있음
+ㆍ 존재하지 않는 허브 ID로 요쳥했음
+|UNAUTHORIZED(401)|권한 없음
+|INTERNAL_SERVER_ERROR(500)|서버 에러
+
+|===
+&#xfeff; +
+&#xfeff; +
+&#xfeff; +
+&#xfeff; +
+&#xfeff;
+
+
+
+== [GET] ~/hub/list
+[GET] https&#xfeff;://example.io:8084/hub/list
+
+=== 허브 목록 확인
+모든 허브들의 목록을 얻습니다. +
+&#xfeff;
+
+==== request
+include::{snippets}/hub_get_list/http-request.adoc[]
+include::{snippets}/hub_get_list/httpie-request.adoc[]
+include::{snippets}/hub_get_list/request-headers.adoc[]
+&#xfeff;
+
+==== response
+include::{snippets}/hub_get_list/http-response.adoc[]
+include::{snippets}/hub_get_list/response-fields.adoc[]
+|===
+|HttpStatus|Description
+
+|[lime]#OK(200)#|정상
+|UNAUTHORIZED(401)|권한 없음
+|INTERNAL_SERVER_ERROR(500)|서버 에러
+
+|===
+&#xfeff; +
+&#xfeff; +
+&#xfeff; +
+&#xfeff; +
+&#xfeff;
+
+
+
+== [GET] ~/device/{id}
+[GET] https&#xfeff;://example.io:8084/device/{id}
+
+=== 장치 정보 확인
+장치의 정보를 얻습니다. +
+&#xfeff;
+
+==== request
+include::{snippets}/device_get_id/http-request.adoc[]
+include::{snippets}/device_get_id/httpie-request.adoc[]
+include::{snippets}/device_get_id/request-headers.adoc[]
+include::{snippets}/device_get_id/path-parameters.adoc[]
+&#xfeff;
+
+==== response
+include::{snippets}/device_get_id/http-response.adoc[]
+include::{snippets}/device_get_id/response-fields.adoc[]
+|===
+|HttpStatus|Description
+
+|[lime]#OK(200)#|정상
+|BAD_REQUEST(400)|
+ㆍ _path parameters_ 에 잘못된 타입의 값이 있음
+ㆍ 존재하지 않는 장치 ID로 요쳥했음
+|UNAUTHORIZED(401)|권한 없음
+|INTERNAL_SERVER_ERROR(500)|서버 에러
+
+|===
+&#xfeff; +
+&#xfeff; +
+&#xfeff; +
+&#xfeff; +
+&#xfeff;
+
+
+
+== [GET] ~/device/list
+[GET] https&#xfeff;://example.io:8084/device/list
+
+=== 장치 목록 확인
+모든 장치들의 목록을 얻습니다. +
+&#xfeff;
+
+==== request
+include::{snippets}/device_get_list/http-request.adoc[]
+include::{snippets}/device_get_list/httpie-request.adoc[]
+include::{snippets}/device_get_list/request-headers.adoc[]
+&#xfeff;
+
+==== response
+include::{snippets}/device_get_list/http-response.adoc[]
+include::{snippets}/device_get_list/response-fields.adoc[]
+|===
+|HttpStatus|Description
+
+|[lime]#OK(200)#|정상
+|UNAUTHORIZED(401)|권한 없음
+|INTERNAL_SERVER_ERROR(500)|서버 에러
+
+|===
+&#xfeff; +
+&#xfeff; +
+&#xfeff; +
+&#xfeff; +
+&#xfeff;
+
+
+
+== [PUT] ~/device/update/{id}
+[PUT] https&#xfeff;://example.io:8084/device/update/{id}
+
+=== 장치 수정
+장치를 수정합니다. +
+&#xfeff;
+
+==== request
+include::{snippets}/device_put_id/http-request.adoc[]
+include::{snippets}/device_put_id/httpie-request.adoc[]
+include::{snippets}/device_put_id/request-headers.adoc[]
+include::{snippets}/device_put_id/path-parameters.adoc[]
+include::{snippets}/device_put_id/request-parameters.adoc[]
+&#xfeff;
+
+==== response
+include::{snippets}/device_put_id/http-response.adoc[]
+include::{snippets}/device_put_id/response-fields.adoc[]
+|===
+|HttpStatus|Description
+
+|[lime]#OK(200)#|정상
+|BAD_REQUEST(400)|
+ㆍ _path parameters_ 에 잘못된 타입의 값이 있음
+ㆍ 존재하지 않는 장치 ID로 요쳥했음
+ㆍ _request parameters_ 에 잘못된 타입의 값이 있거나, 부족한 값이 있음
+|UNAUTHORIZED(401)|권한 없음
+|INTERNAL_SERVER_ERROR(500)|서버 에러
+
+|===
+&#xfeff; +
+&#xfeff; +
+&#xfeff; +
+&#xfeff; +
+&#xfeff;
+
+

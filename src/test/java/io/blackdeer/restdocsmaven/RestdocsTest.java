@@ -23,6 +23,8 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
@@ -38,8 +40,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
@@ -161,7 +162,7 @@ public class RestdocsTest {
     }
 
     @Test
-    public void getUserById() throws Exception {
+    public void user_get_id() throws Exception {
         for (User user : users) {
             when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         }
@@ -188,7 +189,7 @@ public class RestdocsTest {
     }
 
     @Test
-    public void getHubById() throws Exception {
+    public void hub_get_id() throws Exception {
         for (Hub hub : hubs) {
             when(hubRepository.findById(hub.getId())).thenReturn(Optional.of(hub));
         }
@@ -215,7 +216,7 @@ public class RestdocsTest {
     }
 
     @Test
-    public void getDeviceById() throws Exception {
+    public void device_get_id() throws Exception {
         for (Device device : devices) {
             when(deviceRepository.findById(device.getId())).thenReturn(Optional.of(device));
         }
@@ -242,7 +243,7 @@ public class RestdocsTest {
     }
 
     @Test
-    public void getUsersAll() throws Exception {
+    public void user_get_list() throws Exception {
         when(userRepository.findAll()).thenReturn(users);
         this.mockMvc.perform(
                         RestDocumentationRequestBuilders
@@ -265,7 +266,7 @@ public class RestdocsTest {
     }
 
     @Test
-    public void getHubsAll() throws Exception {
+    public void hub_get_list() throws Exception {
         when(hubRepository.findAll()).thenReturn(hubs);
         this.mockMvc.perform(
                         RestDocumentationRequestBuilders
@@ -288,7 +289,7 @@ public class RestdocsTest {
     }
 
     @Test
-    public void getDevicesAll() throws Exception {
+    public void device_get_list() throws Exception {
         when(deviceRepository.findAll()).thenReturn(devices);
         this.mockMvc.perform(
                         RestDocumentationRequestBuilders
@@ -306,6 +307,40 @@ public class RestdocsTest {
                                         fieldWithPath("[]")
                                                 .description("모든 장치")
                                 ).andWithPrefix("[].", fieldDescriptorsDevice)
+                        )
+                );
+    }
+
+    @Test
+    public void device_put_id() throws Exception {
+        for (Device device : devices) {
+            when(deviceRepository.findById(device.getId())).thenReturn(Optional.of(device));
+        }
+        MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>(1);
+        requestParams.add("name", "럭셔리전등");
+        this.mockMvc.perform(
+                        RestDocumentationRequestBuilders
+                                .put(
+                                        "/device/update/{id}",
+                                        1L
+                                )
+                                .headers(httpHeaders)
+//                                .principal(principal)
+                                .params(requestParams)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(restDocumentationResultHandler.
+                        document(
+                                requestHeaders(headerDescriptorList),
+                                pathParameters(
+                                        parameterWithName("id")
+                                                .description("장치 식별 ID")
+                                ),
+                                requestParameters(
+                                        parameterWithName("name")
+                                                .description("장치의 새로운 이름")
+                                ),
+                                responseFields(fieldDescriptorsDevice)
                         )
                 );
     }
