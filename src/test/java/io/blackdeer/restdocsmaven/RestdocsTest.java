@@ -58,7 +58,13 @@ public class RestdocsTest {
     private static FieldDescriptor[] fieldDescriptorsHub;
     private static FieldDescriptor[] fieldDescriptorsDevice;
 
-    private static Principal principal;
+    /*
+        여기에선 실제로 Spring Data JPA를 사용하지 않았다.
+        실제로 repository들을 사용(save 등)하려면
+        repository들을 MockBean이 아니라 실제로 사용하도록 하고,
+        테스트 상황에서 재현하기 힘든 메서드(Service에 있게 되는)를 when으로 처리한다. (Service를 MockBean으로 한다)
+        Controller는 Test Success의 의의를 위해 MockBean이 아닌, 실제 처리가 되도록 한다.
+     */
 
     @MockBean
     private UserRepository userRepository;
@@ -69,6 +75,7 @@ public class RestdocsTest {
     @MockBean
     private DeviceRepository deviceRepository;
 
+    private static ArrayList<Principal> principals;
     private static ArrayList<User> users;
     private static ArrayList<Hub> hubs;
     private static ArrayList<Device> devices;
@@ -153,12 +160,15 @@ public class RestdocsTest {
                         .description("사용자가 지정한 장치의 이름")
         };
 
-        principal = new Principal() {
-            @Override
-            public String getName() {
-                return "사용자01";
-            }
-        };
+        principals = new ArrayList<>(users.size());
+        for (User user : users) {
+            principals.add(new Principal() {
+                @Override
+                public String getName() {
+                    return user.getName();
+                }
+            });
+        }
     }
 
     @Test
@@ -173,7 +183,7 @@ public class RestdocsTest {
                                         1L
                                 )
                                 .headers(httpHeaders)
-//                                .principal(principal)
+//                                .principal(principals.get(0))
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(restDocumentationResultHandler.
@@ -200,7 +210,7 @@ public class RestdocsTest {
                                         1L
                                 )
                                 .headers(httpHeaders)
-//                                .principal(principal)
+//                                .principal(principals.get(0))
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(restDocumentationResultHandler.
@@ -227,7 +237,7 @@ public class RestdocsTest {
                                         1L
                                 )
                                 .headers(httpHeaders)
-//                                .principal(principal)
+//                                .principal(principals.get(0))
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(restDocumentationResultHandler.
@@ -251,7 +261,7 @@ public class RestdocsTest {
                                         "/user/list"
                                 )
                                 .headers(httpHeaders)
-//                                .principal(principal)
+//                                .principal(principals.get(0))
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(restDocumentationResultHandler.
@@ -274,7 +284,7 @@ public class RestdocsTest {
                                         "/hub/list"
                                 )
                                 .headers(httpHeaders)
-//                                .principal(principal)
+//                                .principal(principals.get(0))
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(restDocumentationResultHandler.
@@ -297,7 +307,7 @@ public class RestdocsTest {
                                         "/device/list"
                                 )
                                 .headers(httpHeaders)
-//                                .principal(principal)
+//                                .principal(principals.get(0))
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(restDocumentationResultHandler.
@@ -325,7 +335,7 @@ public class RestdocsTest {
                                         1L
                                 )
                                 .headers(httpHeaders)
-//                                .principal(principal)
+//                                .principal(principals.get(0))
                                 .params(requestParams)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
