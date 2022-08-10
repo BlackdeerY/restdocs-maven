@@ -42,8 +42,8 @@ include::{snippets}/user_get_id/response-fields.adoc[]
 
 |[lime]#OK(200)#|정상
 |BAD_REQUEST(400)|
-ㆍ _path parameters_ 에 잘못된 타입의 값이 있음
-ㆍ 존재하지 않는 사용자 ID로 요쳥했음
+ㆍ__path parameters__에 잘못된 타입의 값이 있음
+ㆍ존재하지 않는 사용자 ID로 요쳥했음
 |UNAUTHORIZED(401)|권한 없음
 |INTERNAL_SERVER_ERROR(500)|서버 에러
 
@@ -110,8 +110,8 @@ include::{snippets}/hub_get_id/response-fields.adoc[]
 
 |[lime]#OK(200)#|정상
 |BAD_REQUEST(400)|
-ㆍ _path parameters_ 에 잘못된 타입의 값이 있음
-ㆍ 존재하지 않는 허브 ID로 요쳥했음
+ㆍ__path parameters__에 잘못된 타입의 값이 있음
+ㆍ존재하지 않는 허브 ID로 요쳥했음
 |UNAUTHORIZED(401)|권한 없음
 |INTERNAL_SERVER_ERROR(500)|서버 에러
 
@@ -178,8 +178,8 @@ include::{snippets}/device_get_id/response-fields.adoc[]
 
 |[lime]#OK(200)#|정상
 |BAD_REQUEST(400)|
-ㆍ _path parameters_ 에 잘못된 타입의 값이 있음
-ㆍ 존재하지 않는 장치 ID로 요쳥했음
+ㆍ__path parameters__에 잘못된 타입의 값이 있음
+ㆍ존재하지 않는 장치 ID로 요쳥했음
 |UNAUTHORIZED(401)|권한 없음
 |INTERNAL_SERVER_ERROR(500)|서버 에러
 
@@ -247,9 +247,9 @@ include::{snippets}/device_put_id/response-fields.adoc[]
 
 |[lime]#OK(200)#|정상
 |BAD_REQUEST(400)|
-ㆍ _path parameters_ 에 잘못된 타입의 값이 있음
-ㆍ 존재하지 않는 장치 ID로 요쳥했음
-ㆍ _request parameters_ 에 잘못된 타입의 값이 있거나, 부족한 값이 있음
+ㆍ__path parameters__에 잘못된 타입의 값이 있음
+ㆍ존재하지 않는 장치 ID로 요쳥했음
+ㆍ__request parameters__에 잘못된 타입의 값이 있거나, 부족한 값이 있음
 |UNAUTHORIZED(401)|권한 없음
 |INTERNAL_SERVER_ERROR(500)|서버 에러
 
