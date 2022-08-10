@@ -1,3 +1,6 @@
+:title: document title
+// (html title 포함)
+:title-logo-image: ex_image.png
 :stylesheet: dark.css
 :doctype: book
 :source-highlighter: highlight.js
@@ -7,7 +10,6 @@
 :sectlinks:
 :table-caption:
 :hardbreaks-option:
-
 
 
 &#xfeff; +
